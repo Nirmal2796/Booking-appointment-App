@@ -32,8 +32,27 @@ function onSubmit(e) {
     else {
         // console.log(username.value);
         // console.log(email.value);
-        localStorage.setItem('name', username.value);
-        localStorage.setItem('email', email.value);
+        
+
+        //localStorage.setItem('name', username.value);
+        // localStorage.setItem('email', email.value);
+       // console.log(localStorage.getItem('email'));
+
+        //storing data as an object
+
+        let user = {
+            name: username.value,
+            email: email.value
+        };
+        
+        //convert it into redable format as it shows object object only
+        let user_serialized = JSON.stringify(user);
+        //console.log(user_serialized);
+
+        localStorage.setItem('User', user_serialized);
+
+
+        //let user_deserialized = JSON.parse(localStorage.getItem('user'));
     }
     
     
