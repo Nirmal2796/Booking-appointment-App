@@ -1,10 +1,5 @@
 
-// const ul = document.querySelector('.items');
 
-// ul.firstElementChild.textContent = "HELLO";
-// ul.children[0].style.color = 'green';
-
-// ul.children[1].style.background = 'yellow';
 
 
 const form = document.querySelector('#my-form');
@@ -19,8 +14,10 @@ const btn = document.querySelector('.btn');
 
 form.addEventListener('submit', onSubmit);
 
+
 function onSubmit(e) {
     e.preventDefault();
+    
 
     if (username.value == '' || email.value == '') {
         msg.innerHTML = '<b>Please enter all fields</b>';
@@ -30,29 +27,53 @@ function onSubmit(e) {
         }, 2000);
     }
     else {
-        // console.log(username.value);
-        // console.log(email.value);
+        
+        
         
 
-        //localStorage.setItem('name', username.value);
-        // localStorage.setItem('email', email.value);
-       // console.log(localStorage.getItem('email'));
+        
+        //Add user in a list
+        var li = document.createElement('li');
+        li.appendChild(document.createTextNode(username.value));
+
+        var ul = document.getElementById('users');
+        ul.appendChild(li);
+
+
+        
+
+        // in this way user is a key which is not unique thats why whenever we try to
+        //store new value it deletes old value and update new value coz user is not unique key 
+        // user is put as key so thats why user will get update with new value rather than creating new value
+        // same like if we put same email as key it will get updated with new value and deleted older value 
+        // we are sending same string or value in key parameter in setitem as key that is same key so it is just updating value not adding new user
+        
+      /*
 
         //storing data as an object
-
-        let user = {
-            name: username.value,
-            email: email.value
-        };
+        // let user = {
+        //     name: username.value,
+        //     email: email.value
+        // };
         
         //convert it into redable format as it shows object object only
-        let user_serialized = JSON.stringify(user);
+        //let user_serialized = JSON.stringify(user);
         //console.log(user_serialized);
 
-        localStorage.setItem('User', user_serialized);
+        
+          // we are sending same string or value in key parameter in setitem as key that is same key so it is just updating value not adding new user
+        //localStorage.setItem('User', user_serialized); 
+        */
 
 
-        //let user_deserialized = JSON.parse(localStorage.getItem('user'));
+
+        
+        
+        //make EMAIL as key and NAME as value so multiple value gets stored in local storage as email will be unique
+        localStorage.setItem(email.value, JSON.stringify(username.value));
+
+        
+        
     }
     
     
