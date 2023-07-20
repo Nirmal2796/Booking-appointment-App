@@ -11,9 +11,13 @@ const btn = document.querySelector('.btn');
 
 var ul = document.getElementById('users');
 
-form.addEventListener('submit', onSubmit);
-ul.addEventListener('click', removeUser);
+var li=document.getElementById('')
 
+form.addEventListener('submit', onSubmit);
+
+
+ul.addEventListener('click', removeUser);
+ul.addEventListener('click', editUser);
 
 // ADD USERS 
 function onSubmit(e) {
@@ -30,18 +34,24 @@ function onSubmit(e) {
             
         //Add user in a list
         var li = document.createElement('li');
-        var name = document.createTextNode(username.value+' ');
-        name.className = 'username';
-        li.appendChild(name);
-        var mail = document.createTextNode(email.value);
-        mail.className='mail'
-        li.appendChild(mail);
+        // var name = ;
+        // name.className = 'username';
+        li.appendChild(document.createTextNode(username.value + ' '));
+        // var mail = ;
+        // mail.className='mail'
+        li.appendChild(document.createTextNode(email.value));
 
-        var btn = document.createElement('button');
-        btn.className = 'btn btn-danger btn-sm float-right delete';
-        btn.appendChild(document.createTextNode('X'));
+        var del_btn = document.createElement('button');
+        del_btn.className = 'btn btn-danger btn-sm float-right delete';
+        del_btn.appendChild(document.createTextNode('X'));
 
-        li.appendChild(btn);
+        var edit_btn = document.createElement('button');
+        edit_btn.className = 'btn btn-secondary btn-sm mr-1 float-right edit';
+        edit_btn.appendChild(document.createTextNode('EDIT'));
+
+        
+        li.appendChild(del_btn);
+        li.appendChild(edit_btn);
 
         var ul = document.getElementById('users');
         ul.appendChild(li);
@@ -50,7 +60,7 @@ function onSubmit(e) {
         //make EMAIL as key and NAME as value so multiple value gets stored in local storage as email will be unique
         localStorage.setItem(email.value, JSON.stringify(username.value));
 
-        
+        form.reset();
         
     }
         
@@ -60,21 +70,44 @@ function onSubmit(e) {
 //REMOVE USERS
 function removeUser(e) {
     
-    if (e.target.classList.contains = 'delete') {
+    if (e.target.classList.contains('delete')) {
 
         var li = e.target.parentElement;
         var email_key = li.childNodes[1].textContent;
 
-       
+        
         localStorage.removeItem(email_key);
 
-        //ul.removeChild(li);
+        ul.removeChild(li);
         
     }
 
-
 }
 
+// EDIT USER
+function editUser(e) {
+    if (e.target.classList.contains('edit')) {
+
+        var li = e.target.parentElement;
+        var email_key = li.childNodes[1].textContent;
+
+        var name = localStorage.getItem(email_key);
+
+        // document.getElementById('name').value = name;
+        // document.getElementById('email').value = email_key;
+
+        username.value = JSON.parse(name);
+        email.value = email_key;
+
+        
+
+        localStorage.removeItem(email_key);
+        ul.removeChild(li);
+        
+
+        
+    }
+}
 
 btn.addEventListener('mouseout', (e) => {
     document.querySelector('body').style.background = "gray";
