@@ -13,9 +13,21 @@ var ul = document.getElementById('users');
 
 var li=document.getElementById('')
 
+
+document.addEventListener('DOMContentLoaded', 
+axios.get("https://crudcrud.com/api/d3ac5f02c8a04ada803ec6b93351ba50/appointmentData")
+    .then(res => {
+        
+        for (let i in res.data) {
+            showUserOnScreen(res.data[i]);
+        }
+        
+    })
+    .catch(err => {
+    console.log(err)
+}));
+
 form.addEventListener('submit', onSubmit);
-
-
 ul.addEventListener('click', removeUser);
 ul.addEventListener('click', editUser);
 
@@ -33,32 +45,23 @@ function onSubmit(e) {
     else {
             
         //Add user in a list
-        var li = document.createElement('li');
-        // var name = ;
-        // name.className = 'username';
-        li.appendChild(document.createTextNode(username.value + ' '));
-        // var mail = ;
-        // mail.className='mail'
-        li.appendChild(document.createTextNode(email.value));
-
-        var del_btn = document.createElement('button');
-        del_btn.className = 'btn btn-danger btn-sm float-right delete';
-        del_btn.appendChild(document.createTextNode('X'));
-
-        var edit_btn = document.createElement('button');
-        edit_btn.className = 'btn btn-secondary btn-sm mr-1 float-right edit';
-        edit_btn.appendChild(document.createTextNode('EDIT'));
-
         
-        li.appendChild(del_btn);
-        li.appendChild(edit_btn);
+        const user= {
+            name : username.value,
+            email : email.value
 
-        var ul = document.getElementById('users');
-        ul.appendChild(li);
+        }
 
-
+        axios.post("https://crudcrud.com/api/d3ac5f02c8a04ada803ec6b93351ba50/appointmentData",user)
+            .then((response) => {
+                showUserOnScreen(response.data);
+                
+            })
+            .catch(err => {
+            console.log(err)
+        })
         //make EMAIL as key and NAME as value so multiple value gets stored in local storage as email will be unique
-        localStorage.setItem(email.value, JSON.stringify(username.value));
+        //localStorage.setItem(email.value, JSON.stringify(username.value));
 
         form.reset();
         
@@ -93,9 +96,7 @@ function editUser(e) {
 
         var name = localStorage.getItem(email_key);
 
-        // document.getElementById('name').value = name;
-        // document.getElementById('email').value = email_key;
-
+       
         username.value = JSON.parse(name);
         email.value = email_key;
 
@@ -107,6 +108,30 @@ function editUser(e) {
 
         
     }
+}
+
+function showUserOnScreen(obj) {
+    
+    var li = document.createElement('li');
+
+    li.appendChild(document.createTextNode(obj.name + ' '));
+
+    li.appendChild(document.createTextNode(obj.email));
+
+    var del_btn = document.createElement('button');
+    del_btn.className = 'btn btn-danger btn-sm float-right delete';
+    del_btn.appendChild(document.createTextNode('X'));
+
+    var edit_btn = document.createElement('button');
+    edit_btn.className = 'btn btn-secondary btn-sm mr-1 float-right edit';
+    edit_btn.appendChild(document.createTextNode('EDIT'));
+
+
+    li.appendChild(del_btn);
+    li.appendChild(edit_btn);
+
+    var ul = document.getElementById('users');
+    ul.appendChild(li);
 }
 
 btn.addEventListener('mouseout', (e) => {
